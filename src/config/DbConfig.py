@@ -11,23 +11,13 @@ class DbConfig:
         self.connect_timeout = 10
         self.sslmode = "prefer"
 
-    def connect(self):
-        try:
-            with psycopg.connect(
-                    host=self.host,
-                    port=self.port,
-                    dbname=self.dbname,
-                    user=self.user,
-                    password=self.password,
-                    connect_timeout=self.connect_timeout,
-                    sslmode=self.sslmode
-            ) as conn:
-                print("Connection successful!")
-
-                with conn.cursor() as cursor:
-                    cursor.execute("SELECT * FROM ptrainer.exercises;")
-                    db_version = cursor.fetchall()
-                    print(f"Exercises:\n{db_version}")
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
+    def get_connection(self):
+        return psycopg.connect(
+            host=self.host,
+            port=self.port,
+            dbname=self.dbname,
+            user=self.user,
+            password=self.password,
+            connect_timeout=self.connect_timeout,
+            sslmode=self.sslmode
+        )
